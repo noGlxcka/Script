@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Uploader</title>
+    <style>
+        body {
+            background-color: #111; /* Darker background */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .textbox {
+            width: 400px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 10px;
+            background-color: #222;
+            color: white;
+        }
+
+        .btn {
+            background-color: #fc0330; /* Red color */
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 10px; /* Slight corner radius */
+            cursor: pointer;
+            font-size: 16px;
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="textbox">
+        <input type="text" id="title" placeholder="Enter Title of Script">
+    </div>
+    <div class="textbox">
+        <textarea id="luaCode" rows="10" placeholder="Enter Lua Code Here"></textarea>
+    </div>
+    <div class="btn" onclick="uploadFile()">Upload File</div>
+    <input type="file" id="file" onchange="loadFile(event)">
+    <div class="btn" onclick="browseFile()">Browse File</div>
+
+    <script>
+        function uploadFile() {
+            var title = document.getElementById("title").value;
+            var luaCode = document.getElementById("luaCode").value;
+            
+            var htmlContent = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${title}</title>
+</head>
+<body>
+    <script>
+        ${luaCode}
+    </script>
+</body>
+</html>`;
+            
+            var blob = new Blob([htmlContent], { type: "text/html" });
+            var url = URL.createObjectURL(blob);
+            window.location.href = url;
+        }
+
+        function browseFile() {
+            document.getElementById("file").click();
+        }
+
+        function loadFile(event) {
+            var file = event.target.files[0];
+            var reader = new FileReader();
+
+            reader.onload = function(){
+                var text = reader.result;
+                document.getElementById("luaCode").value = text;
+            };
+
+            reader.readAsText(file);
+        }
+    </script>
+</body>
+</html>`;
+        }
+    </script>
+</body>
+      </html>
+  
